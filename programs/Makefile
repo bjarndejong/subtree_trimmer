@@ -18,6 +18,7 @@ SRC_FILES = \
 	$(SRC_DIR)/binaryinteger.cpp \
 	$(SRC_DIR)/treedecomp.cpp \
 	$(SRC_DIR)/general.cpp \
+	$(SRC_DIR)/cli.cpp
 
 TARGET = $(BUILD_DIR)/subtree-trimmer
 

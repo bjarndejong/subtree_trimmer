@@ -17,9 +17,9 @@ public:
     std::vector<std::vector<int>::const_iterator> neighbourIterators;               //REPRESENTS THE STATE OF THE ROOTED TREE
 
     //Order of initialization list relevant, therefore odd naming
-    RootedTree(std::vector<std::vector<int>>&& ADJ, int root);
-    RootedTree(const std::vector<std::vector<int>>& ADJ, int root);
-    RootedTree(const RootedTree& other);
+    RootedTree(std::vector<std::vector<int>>&& ADJ, int root);              // Move constructor
+    RootedTree(const std::vector<std::vector<int>>& ADJ, int root);         // Copy constructor
+    RootedTree(const RootedTree& other);                                    // Copy-assign constructor
 
     /*
     void df_traversal(
