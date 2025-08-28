@@ -31,17 +31,18 @@ RootedTree::RootedTree(const RootedTree& other)
 }
 
 void RootedTree::initialize()
-{
-    size_t number_of_nodes = N.size();                                                                          //setup(*this);
-    parents.resize(number_of_nodes);
-    neighbourIterators.resize(number_of_nodes);
-    for(size_t index = 0; index<number_of_nodes; index++)
-        neighbourIterators[index] = N[index].begin();
+{                                                                        //setup(*this);
+    parents.resize(N.size());
+    neighbourIterators.resize(N.size());
 
     //Initialize
     int current = root;
     int parent = root;
-    parents[current-1] = parent;                                                    //discover(current, *this);
+
+    parents[current-1] = parent;                                                // not done by df_traversal function
+    neighbourIterators[current-1] = N[current-1].begin();                                                 
+    //discover(current, *this);
+
 
         //Start traversal
     while(current != parent || neighbourIterators[current-1] != N[current-1].end())
@@ -56,20 +57,28 @@ void RootedTree::initialize()
             {
                 parent = current;
                 current = *neighbourIterators[current-1];
-                parents[current-1] = parent;                                          // discover(current, *this);
+
+                parents[current-1] = parent;                                    // not done by df_traversal function
+                neighbourIterators[current-1] = N[current-1].begin();              
+                // discover(current, *this);
             }
         }
         //Case DONE and NOT ROOT
         else
         {
-                                                                                    //finish(current,*this), does nothing
+            //finish(current,*this), does nothing
+            neighbourIterators[current-1] = N[current-1].begin();
             neighbourIterators[parent-1]++;
+
             current = parent;
             parent = parents[current-1];
         }
     }
-    for(size_t i = 0; i<number_of_nodes; i++)                                              //cleanup(*this);
-        neighbourIterators[i] = N[i].begin();
+
+    neighbourIterators[current-1] = N[current-1].begin();
+    //finish(current,*this)
+
+    //cleanup(*this);
 }
 
 /*

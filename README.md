@@ -62,12 +62,11 @@ The tree decomposition must follow the PACE 2017 format with additional ordering
     - `b` — *bag lines*, format:  
     `b <bag_ID> <bag_contents>`
     - *Tree edge lines*, format:  
-    `<bag_ID_1> <bag_ID_2>`, where `<bag_ID_1> < <bag_ID_2>`
+    `<bag_ID_1> <bag_ID_2>`
 - **General constraints**:
     - Bag IDs are continuous integers from `1` to `<number_of_bags>`.
     - The solution line (`s`) must be the first non-comment line; bag lines (`b`) must appear after the solution line and before the tree edge lines.
 - **Additional constraints**:
     - Comment lines (`c`) appear only at the beginning of the file.
-    - Bag lines must be sorted by bag ID in ascending order.
     - Bag contents within each bag line must be sorted in ascending order.
 

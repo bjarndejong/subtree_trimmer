@@ -35,23 +35,27 @@ TreeDecomp TreeDecomp::from_file(const string& ifname)                  // Stati
     input_holder = input_holder.substr(input_holder.find_first_of(' ')+1,input_holder.length()-input_holder.find_first_of(' '));
     input_holder = input_holder.substr(0,input_holder.find_last_of(' '));
 
-    int num_of_bags = stoi(input_holder);
+    const int num_of_bags = stoi(input_holder);
 
     vector<vector<int>> N(num_of_bags,vector<int>());
     vector<vector<int>> bags(num_of_bags,vector<int>());
 
     //Process bagcontents:              input line: b bagnumber u v w etc
     int bagIndex = 0;
-    while(bagIndex<num_of_bags)
+    int bags_to_read = num_of_bags;
+    while(bags_to_read--)
     {
         getline(ifs,input_holder);
-        input_holder = input_holder.substr(input_holder.find_first_of(' ')+1,input_holder.length()-input_holder.find_first_of(' '));
-        input_holder = input_holder.substr(input_holder.find_first_of(' ')+1,input_holder.length()-input_holder.find_first_of(' '));
         stringstream ss{input_holder};
+        char b;
+        ss >> b;
+        ss >> bagIndex;
+        //input_holder = input_holder.substr(input_holder.find_first_of(' ')+1,input_holder.length()-input_holder.find_first_of(' '));
+        //input_holder = input_holder.substr(input_holder.find_first_of(' ')+1,input_holder.length()-input_holder.find_first_of(' '));
+        
         int t;
         while(ss >> t)
-            bags[bagIndex].push_back(t);
-        bagIndex++;
+            bags[bagIndex-1].push_back(t);
     }
 
     int source, target;
