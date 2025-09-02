@@ -9,12 +9,12 @@
 
 using namespace std;
 
-Graph::Graph(vector<vector<int>>&& N, vector<int>&& weights)
-    : N(move(N)), weights(move(weights)) {
-    // Efficient move construction
+Graph::Graph(vector<vector<int>>&& N)
+    : N(move(N)) {
+
 }
 
-Graph Graph::from_file(const string& ifname)
+Graph Graph::from_gr_file(const string& ifname)
 {
     ifstream ifs{ifname};
     if (!ifs)
@@ -23,36 +23,31 @@ Graph Graph::from_file(const string& ifname)
         exit(1); // or return, depending on your function
     }
     string input_holder{};
-    //Process first line:               input line: n m 10
+    //Process first line:               input line: p tw n m
     getline(ifs,input_holder);
-    input_holder = input_holder.substr(0,input_holder.find_last_of(' '));
-    input_holder = input_holder.substr(0,input_holder.find_last_of(' '));
+    while(input_holder[0] == 'c')
+        getline(ifs,input_holder);
 
-    int num_of_vertices = stoi(input_holder);
+    stringstream ss{input_holder};
+    char p; string tw;
+    int num_of_vertices;
+    int num_of_edges;
+    ss >> p >> tw >> num_of_vertices >> num_of_edges;
 
-    //Initialize
     vector<vector<int>> N(num_of_vertices);
-    vector<int> weights(num_of_vertices);
-
-    //Process remaining lines:               input line: w(v) N(v)
-    int weight;
-    int neighbour;
-
-    int index = 0;
-    while(index<num_of_vertices)
+    int edges_to_read = num_of_edges;
+    int source;
+    int target;
+    while(edges_to_read--)
     {
         getline(ifs,input_holder);
         stringstream ss{input_holder};
-        ss >> weight;
-        weights[index] = weight;
-        while(ss >> neighbour)
-        {
-            N[index].push_back(neighbour);
-        }
-        index++;
+        ss >> source >> target;
+        N[source-1].push_back(target);
+        N[target-1].push_back(source);
     }
     ifs.close();
-    return Graph(move(N), move(weights));
+    return Graph(move(N));
 }
 
 void Graph::print() const
@@ -67,11 +62,6 @@ void Graph::print() const
         }
         cout << "}" << endl;
     }
-    for(vector<int>::const_iterator vertex_it = weights.begin(); vertex_it != weights.end(); vertex_it++)
-    {
-        cout << "w(" << vertex_it-weights.begin()+1 << ") = " << *vertex_it << endl;
-    }
-    cout << endl;
 }
 
 bool Graph::independent_set(const vector<int>& subset) const
@@ -86,14 +76,6 @@ bool Graph::independent_set(const vector<int>& subset) const
 bool Graph::adjacent(int u, int v) const
 {
     return binary_search(N[u-1].begin(),N[u-1].end(),v);
-}
-
-int Graph::weight_set(const vector<int>& subset) const
-{
-    int accumulated_weight = 0;
-    for(vector<int>::const_iterator it = subset.begin(); it != subset.end(); it++)
-        accumulated_weight += weights[(*it) - 1];
-    return accumulated_weight;
 }
 
 int Graph::get_vertex_of_max_degree() const

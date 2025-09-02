@@ -7,18 +7,18 @@
 using namespace std;
 
 // Get graph file, make sure exists and unique
-int check_for_graph_file(const vector<string>& cliArguments, string& filename_graph)
+int check_for_gr_file(const vector<string>& cliArguments, string& filename_gr)
 {
-    int number_of_graph_files = 0;
+    int number_of_gr_files = 0;
     for(int i = 0; i<cliArguments.size(); i++)
     {
-        if (cliArguments[i].size() >= 6 && cliArguments[i].substr(cliArguments[i].size() - 6) == ".graph")
+        if (cliArguments[i].size() >= 3 && cliArguments[i].substr(cliArguments[i].size() - 3) == ".gr")
         {
-            number_of_graph_files++;
-            filename_graph = cliArguments[i];
+            number_of_gr_files++;
+            filename_gr = cliArguments[i];
         }
     }
-    if(number_of_graph_files != 1)
+    if(number_of_gr_files != 1)
     {
         cout << "Arguments must contain a single .graph file" << endl;
         return 1;
@@ -101,7 +101,7 @@ int check_for_help(const vector<string>& cliArguments)
         if(cliArguments.size()==1)
         {
             cout << "Usage:\n"
-            << "  subtree-trimmer <tree_decomposition.td> <graph.graph> [options]\n\n"
+            << "  subtree-trimmer <tree_decomposition.td> <graph.gr> [options]\n\n"
 
             << "Description:\n"
             << "  subtree-trimmer removes vertices v from ends of v-subtrees, modifying bag contents,\n"
@@ -109,8 +109,8 @@ int check_for_help(const vector<string>& cliArguments)
           
             << "Arguments:\n"
             << "  <tree_decomposition.td>     Path to the input tree decomposition file (.td).\n"
-            << "                              Must follow the PACE 2017 format. Additionally, bags and bag contents must be sorted.\n"
-            << "  <graph.graph>               Path to the input graph file (.graph)\n\n"
+            << "                              Must follow the PACE 2017 format. Additionally, bag contents must be sorted.\n"
+            << "  <graph.gr>                  Path to the input graph file (.gr)\n\n"
           
             << "Options:\n"
             << "  --print_td=true|false         Print the entire .td file if true\n"
@@ -118,8 +118,9 @@ int check_for_help(const vector<string>& cliArguments)
             << "  --help                        Show this help message and exit (must be used alone)\n\n"
           
             << "Examples:\n"
-            << "  subtree-trimmer tdfile.td graphfile.graph\n"
-            << "  subtree-trimmer graphfile.graph --print_td=true tdfile.td\n\n"
+            << "  subtree-trimmer tdfile.td graphfile.gr\n"
+            << "  subtree-trimmer graphfile.gr --print_td=true tdfile.td\n"
+            << "  subtree-trimmer graphfile.gr --print_td=true tdfile.td > tdfile_trimmed.td\n\n"
 
             << "Output:\n"
             << "  The program prints to standard output either:\n"

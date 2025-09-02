@@ -7,14 +7,14 @@ Only the contents of bags are modified — the tree structure remains unchanged.
 
 ## Command-Line Usage
 ```
-subtree-trimmer [options] <tree_decomposition.td> <graph.graph>
+subtree-trimmer [options] <tree_decomposition.td> <graph.gr>
 ```
 ### Arguments
 
 | Argument                  | Description                                               | Required |
 |---------------------------|-----------------------------------------------------------|----------|
 | `<tree_decomposition.td>`   | Path to the input tree decomposition file (.td). See [`.td` file](#td-file) below. | Yes |
-| `<graph.graph>`             | Path to the input graph file (.graph). See [`.graph` file](#graph-file) below.                   |   Yes     |
+| `<graph.gr>`             | Path to the input graph file (.gr). See [`.gr` file](#gr-file) below.                   |   Yes     |
 
 ### Options
 
@@ -38,23 +38,31 @@ The program writes the trimmed tree decomposition to standard output:
 ### Example usage
 
 ```
-subtree-trimmer tdfile.td graphfile.graph
-subtree-trimmer graphfile.graph --print_td=true tdfile.td
-subtree-trimmer graphfile.graph --print_td=true tdfile.td > tdfile_trimmed.td
+subtree-trimmer tdfile.td graphfile.gr
+subtree-trimmer graphfile.gr --print_td=true tdfile.td
+subtree-trimmer graphfile.gr --print_td=true tdfile.td > tdfile_trimmed.td
 ```
 
 ## File Formats
 
-### `.graph` file
-An undirected vertex weighted graph following the METIS format 
-- The first line contains three integers: `<number_of_vertices> <number_of_edges> 10`, where   
-    - the constant `10` indicates use of vertex weights but not edge weights.
-- Vertices are numbered consecutively from `1` to `<number_of_vertices>`
-- Each of the following `<number_of_vertices>` lines describes a vertex `v` by `<weight> <neighbour_1> <neighbour_2>` ... :  
-    - Here, `<weight>` is the integer weight of vertex `v`, followed by a space-separated list of its neighbours in ascending order.
+### `.gr` file
+An graph file must follow the PACE 2017 format with additional ordering and sorting requirements as specified below: 
+- **Line types**:
+    - `c` — *comment lines*, e.g., `c <text>`   
+    - `p` — *problem line*, first non-comment line, format:  
+    `p tw <number_of_vertices> <number_of_edges>`
+    - *Graph edge lines*, format:  
+    `<vertex_ID_1> <vertex_ID_2>`
+- **General constraints**:
+    - Vertex IDs are continuous integers from `1` to `<number_of_vertices>`
+    - The problem line (`p`) must be the first non-comment line.
+    - Each edge appears exactly once.
+- **Additional constraints**:
+    - Comment lines (`c`) appear only at the beginning of the file, before the problem line (`p`).
+    - Graph edge lines must be sorted
 
 ### `.td` file
-The tree decomposition must follow the PACE 2017 format with additional ordering and sorting requirements as specified below:
+The tree decomposition file must follow the PACE 2017 format with additional ordering and sorting requirements as specified below:
 - **Line types**:
     - `c` — *comment lines*, e.g., `c <text>`
     - `s` — *solution line*, first non-comment line, format:  

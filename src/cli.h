@@ -8,7 +8,7 @@ int check_for_help(const std::vector<std::string>& cliArguments);
 
 int check_for_td_file(const std::vector<std::string>& cliArguments, std::string& filename_td);
 
-int check_for_graph_file(const std::vector<std::string>& cliArguments, std::string& filename_graph);
+int check_for_gr_file(const std::vector<std::string>& cliArguments, std::string& filename_gr);
 
 int check_for_options(const std::vector<std::string>& cliArguments, bool& print_td);
 

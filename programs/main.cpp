@@ -15,7 +15,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
     ////                                Input parameters                                ////
-    string filename_graph;
+    string filename_gr;
     string filename_td;
     bool print_td = false;
         
@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
         return tdStatus;
 
     // Get graph file, make sure exists and unique
-    int graphStatus = check_for_graph_file(cliArguments,filename_graph);
+    int graphStatus = check_for_gr_file(cliArguments,filename_gr);
     if(graphStatus==1)
         return graphStatus;
 
@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 
     ////                               Set up according to parameters                  ////
 
-    Graph G = Graph::from_file(filename_graph);
+    Graph G = Graph::from_gr_file(filename_gr);
     TreeDecomp TD = TreeDecomp::from_file(filename_td);
 
 
