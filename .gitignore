@@ -4,4 +4,8 @@
 !/build/.gitkeep
 
 scripts/
-tex/
+!/scripts/order_gr_file.sh
+
+
+/tex/*
+!/tex/sea/**

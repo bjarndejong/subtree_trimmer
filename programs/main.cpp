@@ -50,6 +50,7 @@ int main(int argc, char* argv[])
     TreeDecomp TD = TreeDecomp::from_file(filename_td);
 
 
+
     ////                                Begin actual program                            ////
     // Split TD info, which invalidates the TD object
     const int start = 1;

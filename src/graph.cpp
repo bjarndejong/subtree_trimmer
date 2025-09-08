@@ -46,6 +46,8 @@ Graph Graph::from_gr_file(const string& ifname)
         N[source-1].push_back(target);
         N[target-1].push_back(source);
     }
+    //for(int i = 0; i<N.size(); i++)
+    //    sort(N[i].begin(),N[i].end());
     ifs.close();
     return Graph(move(N));
 }

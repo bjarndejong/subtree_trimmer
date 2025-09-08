@@ -58,6 +58,9 @@ TreeDecomp TreeDecomp::from_file(const string& ifname)                  // Stati
             bags[bagIndex-1].push_back(t);
     }
 
+    //for(int i = 0; i< bags.size(); i++)
+    //    sort(bags[i].begin(),bags[i].end());
+
     int source, target;
     while(getline(ifs,input_holder))
     {
