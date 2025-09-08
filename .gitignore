@@ -5,6 +5,7 @@
 
 scripts/
 !/scripts/order_gr_file.sh
+!/scripts/order_td_file.sh
 
 
 /tex/*
