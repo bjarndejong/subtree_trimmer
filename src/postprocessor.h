@@ -13,8 +13,9 @@ class PostProcessor
 public:
     int vertex_to_trim;
 
-    std::vector<BinaryInteger> c;//std::vector<__uint128_t> c;
-    std::vector<int> keep;
+    std::vector<BinaryInteger> neighbourhoodmask; //std::vector<__uint128_t> c;
+    std::vector<int> is_set;
+    std::vector<int> degT;
     std::vector<std::vector<int>>& bags;
     const Graph& G;
 
