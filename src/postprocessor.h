@@ -16,6 +16,7 @@ public:
     std::vector<BinaryInteger> neighbourhoodmask; //std::vector<__uint128_t> c;
     std::vector<int> is_set;
     std::vector<int> degT;
+    std::vector<int> relevant_children;
     std::vector<std::vector<int>>& bags;
     const Graph& G;
 

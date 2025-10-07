@@ -20,6 +20,7 @@ void PostProcessor::setup(RootedTree& RT)
     neighbourhoodmask.resize(RT.N.size());//c = vector<BinaryInteger>(RT.N.size(),BinaryInteger());
     is_set.resize(RT.N.size());
     degT.resize(RT.N.size());//keep = vector<int>(RT.N.size(),0);
+    relevant_children.resize(RT.N.size());
 }
 
 void PostProcessor::discover(const int current, RootedTree& RT)
@@ -93,6 +94,8 @@ void PostProcessor::finish(const int current, RootedTree& RT)
                 degT[parent-1]--;
                 bags[current-1].erase(lower_bound(bags[current-1].begin(),bags[current-1].end(),vertex_to_trim));
             }
+            else
+                relevant_children[parent-1]=current;
         }
         //if(degT[current-1] == 1 && current != RT.root && ((neighbourhoodmask[parent-1] | neighbourhoodmask[current-1]) == neighbourhoodmask[parent-1]))//c[current-1].is_subset_of(c[parent-1]))//
         //{
@@ -107,6 +110,11 @@ void PostProcessor::finish(const int current, RootedTree& RT)
         //    keep[parent-1] = 1;
         //}
     }
+    else
+    {
+        if(current!=RT.root && degT[current-1]>0)   //Exclude boundary nodes
+            relevant_children[parent-1] = current;
+    }
 }
 
 void PostProcessor::cleanup(RootedTree& RT)
@@ -117,41 +125,41 @@ void PostProcessor::cleanup(RootedTree& RT)
     {
         //int relevant_child = 0;
         //int number_of_relevant_children = 0;
-        bool stop = false;
-        for(int i = 0; !stop && i<RT.N[current-1].size(); i++)
+        //bool stop = false;
+        //for(int i = 0; !stop && i<RT.N[current-1].size(); i++)
+        //{
+        //    if(degT[RT.N[current-1][i]-1]>0) // && RT.parents[current-1] != RT.N[current-1][i])
+        //    {
+        int relevant_child = relevant_children[current-1];   //RT.N[current-1][i];
+        if(is_set[relevant_child-1] == false)
         {
-            if(degT[RT.N[current-1][i]-1]>0) // && RT.parents[current-1] != RT.N[current-1][i])
+            int j = 0;
+            for(int i = 0; i<G.N[vertex_to_trim-1].size(); i++)
             {
-                int relevant_child = RT.N[current-1][i];
-                if(is_set[relevant_child-1] == false)
-                {
-                    int j = 0;
-                    for(int i = 0; i<G.N[vertex_to_trim-1].size(); i++)
-                    {
-                        while(j < bags[relevant_child-1].size() && bags[relevant_child-1][j] < G.N[vertex_to_trim-1][i])
-                            j++;
-                        if(j < bags[relevant_child-1].size() && bags[relevant_child-1][j] == G.N[vertex_to_trim-1][i])
-                            neighbourhoodmask[relevant_child-1].set_bit(i);//c[current-1] |= static_cast<__uint128_t>(1) << i;
-                    }
-                    is_set[relevant_child-1] = true;
-                }
-                if((neighbourhoodmask[current-1] | neighbourhoodmask[relevant_child-1]) == neighbourhoodmask[relevant_child-1])
-                {
-                    bags[current-1].erase(lower_bound(bags[current-1].begin(),bags[current-1].end(),vertex_to_trim));
-                    degT[current-1] = 0;
-                    degT[relevant_child-1]--;
-                    keep_reducing = (degT[relevant_child-1]==1);
-                    current = relevant_child;
-                }
-                else
-                {
-                    keep_reducing = false;
-                }
-
-                stop = true;
-                //number_of_relevant_children++;
+                while(j < bags[relevant_child-1].size() && bags[relevant_child-1][j] < G.N[vertex_to_trim-1][i])
+                    j++;
+                if(j < bags[relevant_child-1].size() && bags[relevant_child-1][j] == G.N[vertex_to_trim-1][i])
+                    neighbourhoodmask[relevant_child-1].set_bit(i);//c[current-1] |= static_cast<__uint128_t>(1) << i;
             }
+            is_set[relevant_child-1] = true;
         }
+        if((neighbourhoodmask[current-1] | neighbourhoodmask[relevant_child-1]) == neighbourhoodmask[relevant_child-1])
+        {
+            bags[current-1].erase(lower_bound(bags[current-1].begin(),bags[current-1].end(),vertex_to_trim));
+            degT[current-1] = 0;
+            degT[relevant_child-1]--;
+            keep_reducing = (degT[relevant_child-1]==1);
+            current = relevant_child;
+        }
+        else
+        {
+            keep_reducing = false;
+        }
+
+            //    stop = true;
+                //number_of_relevant_children++;
+            //}
+        //}
         //if(number_of_relevant_children == 1)
         //{
         //    if((neighbourhoodmask[current-1] | neighbourhoodmask[relevant_child-1]) == neighbourhoodmask[relevant_child-1])//(c[current-1].is_subset_of(c[relevant_child-1]))
